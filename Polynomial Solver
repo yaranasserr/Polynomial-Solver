@@ -1,0 +1,174 @@
+import re
+# set
+# A # [1,-3,2]
+# print # A
+# Sample Output 0
+# x^2-3x+2
+import math
+from json import loads
+
+class Polynomial:
+
+    def __init__(self, coefficients):
+        self.coeffs=coefficients
+    
+
+    def __str__(self):
+        out = ''
+        size = len(self.coeffs)    
+        for i in range(size):  
+                #To Solve the ignored coefficient
+            if self.coeffs[i] != 0:
+                
+
+                out += ' + %gx^%d' % (self.coeffs[i],size-i-1)   #To solve Backwards order
+    # Fixing replace(old,new)
+        out = out.replace('+ -', ' - ')
+        out = out.replace('x^0', '')
+        out = out.replace(' 1*', '')
+        out = out.replace('x^1 ', 'x')
+        out = out.replace('1x^2 ', 'x^2')
+        out = out.replace('1x^3 ', 'x^3')
+        out = out.replace('1x^4 ', 'x^4')
+        out = out.replace('-x^4 ', '-1x^4')
+        out = out.replace('-x^3 ', '-1x^3')
+        out = out.replace('-x^2 ', '-1x^2')
+        out = out.replace('-1x^1 ', '-1x^1')
+        if out[0:3] ==  ' + ':  # remove initial +
+          out = out[3:]
+          out = out.replace(' ', '')
+
+        if out[0:3] == '-':  # fix spaces for initial -
+           out = ' -' + out[3:]
+        return out.replace(" ", "")
+
+operation=input()  #ex set
+variable=input()  #ex a
+str_mat=input()#input("Enter array of coeffients ") ex a
+lst=loads(str_mat)
+op=input() # ex set
+var =input() # ex B for add 
+
+#checking errors
+if (len(lst)==0):
+    print("Error")
+#evaluating
+elif operation =="set" and op == "eval" and ( variable =="A" or variable=="B" or variable =="C") and( var =="A" or var=="B" or var =="C" ):     
+    
+    x = int(input())
+    n = len(lst)
+ 
+# Declaring the result
+    result = 0
+ 
+# Running a for loop to traverse through the list
+    for i in range(n):
+        
+        
+        Sum = lst[i]
+        for j in range(n - i - 1):
+            Sum = Sum * x
+        result = result + Sum
+# Printing the result
+    print(result)
+ # set
+ 
+#clear 
+elif op=="clear" and( variable =="A" or variable=="B" or variable =="C") and( var =="A" or var=="B" or var =="C" ):
+    print("[]")
+    
+elif op=="print" and ( variable =="A" or variable=="B" or variable =="C") and( var =="A" or var=="B" or var =="C" ):
+    #1st print A equation (input variable)
+    a = Polynomial(lst)
+    print(a)
+
+    #2nd take operation set for B and repeat
+   # vari=input() # choose A
+    operation=input() #operation set
+    if operation=="set":
+        variabl=input()#input("Enter variable A or B or C ")
+        str_matB=input()#input("Enter array of coeffients ")
+        lstB=loads(str_matB)
+        optwo=input()#input("enter second op ")
+        
+        varB =input() #choose B
+        if optwo =="print" and (varB =="A" or varB=="B" or varB =="C") and ( variabl =="A" or variabl=="B" or variabl=="C") :
+            b = Polynomial(lstB)
+            print(b)
+            
+        
+            opthree=input() #set for C
+            
+        
+            if opthree=="set":
+                variab=input()#input("Enter variable A or B or C ")
+                str_matC=input()#input("Enter array of coeffients ")
+                lstC=loads(str_matC)
+                opC=input()
+                varC=input() #choose C
+                
+                if opC =="print" and( varC =="A" or varC=="B" or varC =="C" )and ( variab =="A" or variab=="B" or variab=="C"):
+                    c = Polynomial(lstC)
+                    print(c)
+           
+                    
+elif op =="set" and variable =="A" or variable=="B" or variable =="C" :
+    #akhod l B b set
+    str_matB=input()#input("Enter array of coeffients ")
+    lstB=loads(str_matB)
+    # m3aya list A =lst lst B = lstB
+    mathop=input() #akhod add
+    if mathop =="add" and( var =="A" or var=="B" or var =="C" ):
+        #take two variables
+        V1=input()
+        V2=input()
+        if( (V1=="A" and V2=="B") or (V2=="A" and V1=="B") or (V2=="A" and V1=="C") or (V2=="C" and V1=="A") or (V2=="B" and V1=="C") or (V2=="C" and V1=="B")):
+            
+            R=[0]*len(lst)
+            for i in range(len(lst)):
+                R[i]= lst[i] + lstB[i]
+           # print(R)
+            r = Polynomial(R)
+            print(r)
+        
+            
+
+        
+    elif mathop == "sub" and( var =="A" or var=="B" or var =="C" ):
+        
+        
+        V1=input()
+        V2=input()
+        if( (V1=="A" and V2=="B") or (V2=="A" and V1=="B") or (V2=="A" and V1=="C") or (V2=="C" and V1=="A") or (V2=="B" and V1=="C") or (V2=="C" and V1=="B")):
+            R=[0]*len(lst)
+            for i in range(len(lst)):
+                R[i]= lst[i] - lstB[i]
+            r = Polynomial(R)
+            #s.replace(" ", "")
+            print(r)
+            
+        
+
+    elif mathop == "mult" and( var =="A" or var=="B" or var =="C" ):       
+        V1=input()
+        V2=input()
+        if( (V1=="A" and V2=="B") or (V2=="A" and V1=="B") or (V2=="A" and V1=="C") or (V2=="C" and V1=="A") or (V2=="B" and V1=="C") or (V2=="C" and V1=="B")):
+            def polynomial_multiplication(V1, V2):
+                m=len(lst)
+                n=len(lstB)
+                result = [0]*(m+n-1)
+                for i in range(m):
+                    for j in range(n):
+                        result[i+j] += lst[i]* lstB[j]
+                return result
+            
+            result = (polynomial_multiplication(lst,lstB))
+           
+            r=Polynomial(result)
+            print(r)
+    else:
+        print("Error")
+            
+else:
+    print("Error")
+            
